@@ -1,6 +1,9 @@
 <!-- App.svelte -->
-<script>
+<script lang="ts">
+	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
+	import { preventDefault } from 'svelte/legacy';
   
   let isMenuOpen = false;
   let activeSection = 'accueil';
@@ -9,7 +12,11 @@
     isMenuOpen = !isMenuOpen;
   }
   
-  function scrollToSection(id) {
+
+  function handleClick() {
+    goto("/dash");
+  }
+  function scrollToSection(id:string) {
     const element = document.getElementById(id);
     if (element) {
       isMenuOpen = false;
@@ -45,23 +52,33 @@
   <div class="container">
     <nav>
       <div class="logo">
-        <img src="/api/placeholder/40/40" alt="TimePro Logo" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 256 256"><path fill="#6435ff" d="M161.22 209.74a4 4 0 0 1-3.31 6.26H98.1a4 4 0 0 1-3.31-6.26a40 40 0 0 1 66.43 0m68.93 3.37a8.29 8.29 0 0 1-6.43 2.89h-39.16a4 4 0 0 1-3.76-2.65a56 56 0 0 0-105.59 0a4 4 0 0 1-3.76 2.65H32.23a8.2 8.2 0 0 1-6.42-2.93a8 8 0 0 1-.06-10.07c.06-.07 7.64-9.78 15.12-28.72C47.77 156.8 56 127.64 56 88a72 72 0 0 1 144 0c0 39.64 8.23 68.8 15.13 86.28c7.48 18.94 15.06 28.65 15.13 28.74a8 8 0 0 1-.11 10.09M88 100a12 12 0 1 0 12-12a12 12 0 0 0-12 12m79.16 32.42a8 8 0 0 0-10.73-3.58L128 143.06l-28.42-14.22a8 8 0 0 0-7.15 14.32l32 16a8 8 0 0 0 7.15 0l32-16a8 8 0 0 0 3.58-10.74M168 100a12 12 0 1 0-12 12a12 12 0 0 0 12-12"/></svg>
         <span>TimePro</span>
       </div>
       
-      <div class="nav-toggle" on:click={toggleMenu}>
+      <div class="nav-toggle" onclick={toggleMenu}>
         <span></span>
         <span></span>
         <span></span>
       </div>
       
       <ul class="nav-links" class:active={isMenuOpen}>
-        <li><a href="#accueil" class:active={activeSection === 'accueil'} on:click|preventDefault={() => scrollToSection('accueil')}>Accueil</a></li>
-        <li><a href="#fonctionnalites" class:active={activeSection === 'fonctionnalites'} on:click|preventDefault={() => scrollToSection('fonctionnalites')}>Fonctionnalités</a></li>
-        <li><a href="#avantages" class:active={activeSection === 'avantages'} on:click|preventDefault={() => scrollToSection('avantages')}>Avantages</a></li>
-        <li><a href="#tarifs" class:active={activeSection === 'tarifs'} on:click|preventDefault={() => scrollToSection('tarifs')}>Tarifs</a></li>
-        <li><a href="#temoignages" class:active={activeSection === 'temoignages'} on:click|preventDefault={() => scrollToSection('temoignages')}>Témoignages</a></li>
-        <li><a href="#contact" class:active={activeSection === 'contact'} on:click|preventDefault={() => scrollToSection('contact')}>Contact</a></li>
+
+        <li>
+          <a 
+            href="#accueil" 
+            class:active={activeSection === 'accueil'} 
+            onclick={(e) => { e.preventDefault(); scrollToSection('accueil'); }}
+          >
+            Accueil
+          </a>
+        </li>
+        
+        <li><a href="#fonctionnalites" class:active={activeSection === 'fonctionnalites'} onclick={(e) => {  e.preventDefault();scrollToSection('fonctionnalites')}}>Fonctionnalités</a></li>
+        <li><a href="#avantages" class:active={activeSection === 'avantages'} onclick={(e) =>{ e.preventDefault(); scrollToSection('avantages')}}>Avantages</a></li>
+        <li><a href="#tarifs" class:active={activeSection === 'tarifs'}   onclick={(e) =>{ e.preventDefault(); scrollToSection('tarifs')}}>Tarifs</a></li>
+        <li><a href="#temoignages" class:active={activeSection === 'temoignages'} onclick={(e) =>{ e.preventDefault(); scrollToSection('temoignages')}}>Témoignages</a></li>
+        <li><a href="#contact" class:active={activeSection === 'contact'} onclick={(e) =>{ e.preventDefault(); scrollToSection('contact')}}>Contact</a></li>
       </ul>
       
       <div class="action-buttons">
@@ -79,8 +96,8 @@
         <h1>Simplifiez la gestion du temps de vos employés</h1>
         <p>TimePro est le logiciel de gestion de temps le plus complet pour les entreprises modernes. Suivi des heures, planification, rapports et bien plus.</p>
         <div class="hero-buttons">
-          <button class="btn btn-primary btn-lg">Commencer maintenant</button>
-          <button class="btn btn-outline btn-lg">Voir la démo</button>
+          <button class="btn btn-primary btn-lg"   onclick={handleClick}>Commencer maintenant</button>
+          <button class="btn btn-outline btn-lg"   onclick={handleClick} >Voir la démo</button>
         </div>
       </div>
       <div class="hero-image">
@@ -198,7 +215,7 @@
             <li>Application mobile</li>
           </ul>
           
-          <button class="btn btn-primary">Essai gratuit</button>
+          <button class="btn btn-primary"  onclick={handleClick}>Essai gratuit</button>
         </div>
         
         <div class="pricing-card featured">
